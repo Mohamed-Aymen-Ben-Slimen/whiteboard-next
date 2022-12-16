@@ -30,7 +30,7 @@ const Chat = () => {
         msg,
         id: msgs.length + 1,
         username: user?.name || 'Anonymous',
-        color: user?.color || '#000',
+        color: user?.color || '#3ca839',
       });
 
       msgList.current?.scroll({ top: msgList.current?.scrollHeight });
@@ -50,6 +50,7 @@ const Chat = () => {
       className="absolute bottom-0 z-50 flex h-[300px] w-full flex-col overflow-hidden rounded-t-md sm:left-36 sm:w-[30rem]"
       animate={{ y: opened ? 0 : 260 }}
       transition={{ duration: 0.2 }}
+
     >
       <button
         className="flex w-full cursor-pointer items-center justify-between bg-zinc-900 py-2 px-10 font-semibold text-white"
