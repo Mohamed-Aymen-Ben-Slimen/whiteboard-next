@@ -42,9 +42,9 @@ const MiniMap = ({ dragging }: { dragging: boolean }) => {
   const miniY = useMotionValue(0);
 
   const divider = useMemo(() => {
-    if (width > 1600) return 7;
-    if (width > 1000) return 10;
-    if (width > 600) return 14;
+    if (width > 1600) return 8;
+    if (width > 1000) return 14;
+    if (width > 600) return 16;
     return 20;
   }, [width]);
 
@@ -64,7 +64,7 @@ const MiniMap = ({ dragging }: { dragging: boolean }) => {
 
   return (
     <div
-      className="absolute right-10 top-10 z-30 overflow-hidden rounded-lg shadow-lg"
+      className="absolute right-6 top-[15%] z-30 overflow-hidden rounded-lg shadow-lg"
       style={{
         width: CANVAS_SIZE.width / divider,
         height: CANVAS_SIZE.height / divider,

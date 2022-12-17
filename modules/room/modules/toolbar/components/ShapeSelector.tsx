@@ -32,23 +32,29 @@ const ShapeSelector = () => {
   return (
     <div className="relative flex items-center" ref={ref}>
       <button
-        className="btn-icon text-2xl"
+         className="flex flex-col justify-center items-center"
         disabled={options.mode === 'select'}
         onClick={() => setOpened((prev) => !prev)}
       >
-        {options.shape === 'circle' && <BsCircle />}
-        {options.shape === 'rect' && <BiRectangle />}
-        {options.shape === 'line' && <CgShapeZigzag />}
+        {options.shape === 'circle' && <BsCircle className="btn-icon text-4xl"/>}
+        {options.shape === 'rect' && <BiRectangle className="btn-icon text-4xl"/>}
+        {options.shape === 'line' && <CgShapeZigzag className="btn-icon text-4xl"/>}
+        <p>{options.shape}</p>
       </button>
 
       <AnimatePresence>
         {opened && (
           <motion.div
-            className="absolute left-14 z-10 flex gap-1 rounded-lg border bg-zinc-900 p-2 md:border-0"
+            className="absolute -left-10 bottom-[-70px] z-10 flex gap-1 rounded-lg border p-2 md:border-0"
             variants={EntryAnimation}
             initial="from"
             animate="to"
             exit="from"
+            style={
+              {
+                backgroundColor: '#3ca839'
+              }
+            }
           >
             <button
               className="btn-icon text-2xl"

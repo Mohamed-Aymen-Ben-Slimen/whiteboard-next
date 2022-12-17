@@ -21,21 +21,23 @@ const ColorPicker = () => {
   return (
     <div className="relative flex items-center" ref={ref}>
       <button
-        className="btn-icon"
+        className="flex flex-col justify-center items-center"
         onClick={() => setOpened(!opened)}
         disabled={options.mode === 'select'}
       >
-        <BsPaletteFill />
+        <BsPaletteFill className="btn-icon text-2xl"/>
+        <p>Color</p>
       </button>
       <AnimatePresence>
         {opened && (
           <motion.div
-            className="absolute left-10 mt-24 sm:left-14"
+            className="absolute -top-5 -left-20 mt-24 flex flex-row gap-10"
             variants={EntryAnimation}
             initial="from"
             animate="to"
             exit="from"
           >
+            <div>
             <h2 className="ml-3 font-semibold text-black dark:text-white">
               Line color
             </h2>
@@ -49,6 +51,8 @@ const ColorPicker = () => {
               }}
               className="mb-5"
             />
+            </div>
+            <div>
             <h2 className="ml-3 font-semibold text-black dark:text-white">
               Fill color
             </h2>
@@ -61,6 +65,7 @@ const ColorPicker = () => {
                 });
               }}
             />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

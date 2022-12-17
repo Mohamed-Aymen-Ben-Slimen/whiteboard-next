@@ -8,8 +8,9 @@ const BackgroundPicker = () => {
   const { openModal } = useModal();
 
   return (
-    <button className="btn-icon" onClick={() => openModal(<BackgroundModal />)}>
-      <CgScreen />
+    <button  className="flex flex-col justify-center items-center" onClick={() => openModal(<BackgroundModal />)}>
+      <CgScreen  className="btn-icon text-4xl"/>
+      <p>Background</p>
     </button>
   );
 };

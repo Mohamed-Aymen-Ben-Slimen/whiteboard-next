@@ -20,6 +20,7 @@ import ImagePicker from './ImagePicker';
 import LineWidthPicker from './LineWidthPicker';
 import ModePicker from './ModePicker';
 import ShapeSelector from './ShapeSelector';
+import UserList from '@/modules/room/components/UserList';
 
 const ToolBar = () => {
   const { canvasRef, bgRef } = useRefs();
@@ -68,7 +69,7 @@ const ToolBar = () => {
         <FiChevronRight />
       </motion.button>
       <motion.div
-        className="absolute left-10 top-[50%] z-50 grid grid-cols-2 items-center gap-5 rounded-lg bg-zinc-900 p-5 text-white 2xl:grid-cols-1"
+        className="absolute left-[50%] top-[8%] z-50 grid grid-flow-col px-8 auto-cols-max items-center gap-8 rounded-lg p-3 text-white "
         animate={{
           x: opened ? 0 : -160,
           y: '-50%',
@@ -76,11 +77,25 @@ const ToolBar = () => {
         transition={{
           duration: 0.2,
         }}
+        style={
+          {
+            translateX: '-50%',
+            backgroundColor: '#3ca839'
+          }
+        }
       >
+        <UserList />
+        <div className="flex flex-col justify-center items-center">
+          <h1 className='text-3xl font-bold'>Whiteboard</h1>
+        </div>
+
+        <div className="w-px h-full bg-white 2xl:hidden" />
+        <div className="w-px h-full bg-white" />
+
         <HistoryBtns />
 
-        <div className="h-px w-full bg-white 2xl:hidden" />
-        <div className="h-px w-full bg-white" />
+        <div className="w-px h-full bg-white 2xl:hidden" />
+        <div className="w-px h-full bg-white" />
 
         <ShapeSelector />
         <ColorPicker />
@@ -89,18 +104,21 @@ const ToolBar = () => {
         <ImagePicker />
 
         <div className="2xl:hidden"></div>
-        <div className="h-px w-full bg-white 2xl:hidden" />
-        <div className="h-px w-full bg-white" />
+        <div className="w-px h-full bg-white 2xl:hidden" />
+        <div className="w-px h-full bg-white" />
 
         <BackgroundPicker />
-        <button className="btn-icon text-2xl" onClick={handleShare}>
-          <IoIosShareAlt />
+        <button className="flex flex-col justify-center items-center" onClick={handleShare}>
+          <IoIosShareAlt className="btn-icon text-4xl"  />
+          <p>Share</p>
         </button>
-        <button className="btn-icon text-2xl" onClick={handleDownload}>
-          <HiOutlineDownload />
+        <button className="flex flex-col justify-center items-center" onClick={handleDownload}>
+          <HiOutlineDownload  className="btn-icon text-4xl" />
+          <p>Save</p>
         </button>
-        <button className="btn-icon text-xl" onClick={handleExit}>
-          <ImExit />
+        <button className="flex flex-col justify-center items-center" onClick={handleExit}>
+          <ImExit  className="btn-icon text-4xl"/>
+          <p>Exit</p>
         </button>
       </motion.div>
     </>

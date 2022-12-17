@@ -46,8 +46,9 @@ const ImagePicker = () => {
   };
 
   return (
-    <button className="btn-icon text-xl" onClick={handleImageInput}>
-      <BsFillImageFill />
+    <button className="flex flex-col justify-center items-center" onClick={handleImageInput}>
+      <BsFillImageFill className="btn-icon text-4xl"/>
+      <p>Image</p>
     </button>
   );
 };

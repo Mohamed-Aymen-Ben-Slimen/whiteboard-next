@@ -20,16 +20,17 @@ const LineWidthPicker = () => {
   return (
     <div className="relative flex items-center" ref={ref}>
       <button
-        className="btn-icon text-xl"
+        className="flex flex-col justify-center items-center"
         onClick={() => setOpened(!opened)}
         disabled={options.mode === 'select'}
       >
-        <BsBorderWidth />
+        <BsBorderWidth className="btn-icon text-4xl"/>
+        <p>Thikness</p>
       </button>
       <AnimatePresence>
         {opened && (
           <motion.div
-            className="absolute top-[6px] left-14 w-36"
+            className="absolute bottom-[-60px] -left-6 w-36"
             variants={EntryAnimation}
             initial="from"
             animate="to"
@@ -46,7 +47,7 @@ const LineWidthPicker = () => {
                   lineWidth: parseInt(e.target.value, 10),
                 }))
               }
-              className="h-4 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
+              className="h-4 w-full cursor-pointer appearance-none rounded-lg bg-green-400"
             />
           </motion.div>
         )}

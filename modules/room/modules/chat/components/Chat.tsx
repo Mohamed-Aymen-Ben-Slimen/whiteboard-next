@@ -53,17 +53,22 @@ const Chat = () => {
 
     >
       <button
-        className="flex w-full cursor-pointer items-center justify-between bg-zinc-900 py-2 px-10 font-semibold text-white"
+        className="flex w-full cursor-pointer items-center justify-between py-2 px-10 font-semibold text-white"
         onClick={() => {
           setOpened((prev) => !prev);
           setNewMsg(false);
         }}
+        style={
+          {
+            backgroundColor: '#3ca839'
+          }
+        }
       >
         <div className="flex items-center gap-2">
           <BsFillChatFill className="mt-[-2px]" />
           Chat
           {newMsg && (
-            <p className="rounded-md bg-green-500 px-1 font-semibold text-green-900">
+            <p className="rounded-md bg-yellow-500 px-1 font-semibold text-white">
               New!
             </p>
           )}
@@ -76,7 +81,7 @@ const Chat = () => {
           <FaChevronDown />
         </motion.div>
       </button>
-      <div className="flex flex-1 flex-col justify-between bg-white p-3">
+      <div className="flex flex-1 flex-col justify-between bg-white p-3 opacity-75">
         <div className="h-[190px] overflow-y-scroll pr-2" ref={msgList}>
           {msgs.map((msg) => (
             <Message key={msg.id} {...msg} />

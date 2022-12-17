@@ -4,12 +4,12 @@ const UserList = () => {
   const { users } = useRoom();
 
   return (
-    <div className="pointer-events-none absolute z-30 flex p-5">
+    <div className="pointer-events-none absolute bottom-[-62px] z-30 flex p-5">
       {[...users.keys()].map((userId, index) => {
         return (
           <div
             key={userId}
-            className="flex h-5 w-5 select-none items-center justify-center rounded-full text-xs text-white md:h-8 md:w-8 md:text-base lg:h-12 lg:w-12"
+            className="flex h-5 w-5 select-none items-center justify-center rounded-full text-xs text-white md:h-8 md:w-8 md:text-base lg:h-10 lg:w-10"
             style={{
               backgroundColor: users.get(userId)?.color || 'black',
               marginLeft: index !== 0 ? '-0.5rem' : 0,

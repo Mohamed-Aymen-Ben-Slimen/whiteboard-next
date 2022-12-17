@@ -22,7 +22,12 @@ const ChatInput = () => {
         value={msg}
         onChange={(e) => setMsg(e.target.value)}
       />
-      <button className="btn-icon h-full w-10 bg-black" type="submit">
+      <button className="btn-icon h-full w-10" type="submit"
+      style={
+        {
+          backgroundColor: '#3ca839'
+        }
+      }>
         <AiOutlineSend />
       </button>
     </form>
