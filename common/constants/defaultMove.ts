@@ -11,7 +11,7 @@ export const DEFAULT_MOVE: Move = {
     width: 0,
     height: 0,
   },
-  text: '',
+  text: {text: '', x: 0, y: 0},
   path: [],
   options: {
     shape: 'line',
