@@ -48,6 +48,20 @@ export const drawCircle = (
   return { cX, cY, radiusX, radiusY };
 };
 
+export const drawText = (
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+) => {
+  ctx.beginPath();
+
+  ctx.font = "30px Georgia";
+  ctx.fillText(text, x, y);
+
+  return { text };
+};
+
 export const drawRect = (
   ctx: CanvasRenderingContext2D,
   from: [number, number],

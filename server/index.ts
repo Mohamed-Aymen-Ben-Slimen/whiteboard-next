@@ -127,6 +127,8 @@ nextApp.prepare().then(async () => {
     });
 
     socket.on('draw', (move) => {
+
+      console.log(move);
       const roomId = getRoomId();
 
       const timestamp = Date.now();

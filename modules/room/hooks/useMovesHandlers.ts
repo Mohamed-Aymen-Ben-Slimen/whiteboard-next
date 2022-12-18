@@ -64,7 +64,7 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
   const drawMove = (move: Move, image?: HTMLImageElement) => {
     const { path } = move;
 
-    if (!ctx || !path.length) return;
+    if (!ctx) return;
 
     const moveOptions = move.options;
 
@@ -115,6 +115,12 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
         ctx.closePath();
         break;
       }
+
+      case 'text':
+        ctx.font = "30px Georgia";
+        ctx.fillStyle = getStringFromRgba(moveOptions.lineColor);
+        ctx.fillText(move.text.text, move.text.x, move.text.y);
+        break;
 
       default:
         break;

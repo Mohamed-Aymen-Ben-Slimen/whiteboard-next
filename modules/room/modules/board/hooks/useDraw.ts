@@ -11,7 +11,7 @@ import { useMyMoves } from '@/common/recoil/room';
 import { useSetSavedMoves } from '@/common/recoil/savedMoves';
 import { Move } from '@/common/types/global';
 
-import { drawRect, drawCircle, drawLine } from '../helpers/Canvas.helpers';
+import { drawRect, drawCircle, drawLine, drawText } from '../helpers/Canvas.helpers';
 import { useBoardPosition } from './useBoardPosition';
 import { useCtx } from './useCtx';
 
@@ -19,6 +19,11 @@ let tempMoves: [number, number][] = [];
 let tempCircle = { cX: 0, cY: 0, radiusX: 0, radiusY: 0 };
 let tempSize = { width: 0, height: 0 };
 let tempImageData: ImageData | undefined;
+let tempText = { text: '', x: 0, y: 0 };
+
+let mouseX = 0;
+let mouseY = 0;
+let startingX = 0;
 
 export const useDraw = (blocked: boolean) => {
   const options = useOptionsValue();
@@ -39,6 +44,7 @@ export const useDraw = (blocked: boolean) => {
       ctx.lineWidth = options.lineWidth;
       ctx.strokeStyle = getStringFromRgba(options.lineColor);
       ctx.fillStyle = getStringFromRgba(options.fillColor);
+      ctx.fillStyle = getStringFromRgba(options.lineColor);
       if (options.mode === 'eraser')
         ctx.globalCompositeOperation = 'destination-out';
       else ctx.globalCompositeOperation = 'source-over';
@@ -75,6 +81,33 @@ export const useDraw = (blocked: boolean) => {
 
     tempMoves.push([finalX, finalY]);
   };
+
+  const handleStartText = (x: number, y: number) => {
+    if (options.shape === 'text' && options.mode !== 'select') {
+      mouseX = x;
+      mouseY = y;
+      startingX = mouseX;
+    }
+  }
+
+  const handleWritingText = (s: string) => {
+    if (!ctx || blocked) return;
+
+    if (options.shape === 'text' && options.mode !== 'select' && s.length === 1) {
+      tempText = { text: s, x: mouseX, y: mouseY };
+      drawText(ctx, s, mouseX, mouseY);
+      mouseX += 1 + ctx.measureText(s).width;
+      console.log(ctx.measureText(s).width);
+      
+      handleEndDrawing();
+    }
+    if (s === 'Enter') {
+      mouseX = startingX;
+      mouseY += 34;
+      tempText = { text: '', x: mouseX, y: mouseY };
+      handleEndDrawing();
+    }
+  }
 
   const handleDraw = (x: number, y: number, shift?: boolean) => {
     if (!ctx || !drawing || blocked) return;
@@ -166,6 +199,7 @@ export const useDraw = (blocked: boolean) => {
       circle: {
         ...tempCircle,
       },
+      text: tempText,
       path: tempMoves,
       options,
     };
@@ -173,6 +207,7 @@ export const useDraw = (blocked: boolean) => {
     tempMoves = [];
     tempCircle = { cX: 0, cY: 0, radiusX: 0, radiusY: 0 };
     tempSize = { width: 0, height: 0 };
+    tempText = { text: '', x: 0, y: 0 };
 
     if (options.mode !== 'select') {
       socket.emit('draw', move);
@@ -186,5 +221,7 @@ export const useDraw = (blocked: boolean) => {
     handleStartDrawing,
     drawing,
     clearOnYourMove,
+    handleStartText,
+    handleWritingText,
   };
 };

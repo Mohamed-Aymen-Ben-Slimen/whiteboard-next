@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { BiRectangle } from 'react-icons/bi';
-import { BsCircle } from 'react-icons/bs';
+import { BsCircle, BsTextareaT } from 'react-icons/bs';
 import { CgShapeZigzag } from 'react-icons/cg';
 import { useClickAway } from 'react-use';
 
@@ -39,6 +39,7 @@ const ShapeSelector = () => {
         {options.shape === 'circle' && <BsCircle className="btn-icon text-4xl"/>}
         {options.shape === 'rect' && <BiRectangle className="btn-icon text-4xl"/>}
         {options.shape === 'line' && <CgShapeZigzag className="btn-icon text-4xl"/>}
+        {options.shape === 'text' && <BsTextareaT className="btn-icon text-4xl"/>}
         <p>{options.shape}</p>
       </button>
 
@@ -75,6 +76,13 @@ const ShapeSelector = () => {
               onClick={() => handleShapeChange('circle')}
             >
               <BsCircle />
+            </button>
+
+            <button
+              className="btn-icon text-2xl"
+              onClick={() => handleShapeChange('text')}
+            >
+              <BsTextareaT />
             </button>
           </motion.div>
         )}

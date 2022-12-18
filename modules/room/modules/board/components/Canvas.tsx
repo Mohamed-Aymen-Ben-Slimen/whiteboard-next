@@ -28,8 +28,10 @@ const Canvas = () => {
     handleEndDrawing,
     handleDraw,
     handleStartDrawing,
+    handleStartText,
     drawing,
     clearOnYourMove,
+    handleWritingText,
   } = useDraw(dragging);
   useSocketDraw(drawing);
 
@@ -41,6 +43,11 @@ const Canvas = () => {
     setDragging(false);
   }, []);
 
+  const handleKeydown = (e: KeyboardEvent) => {
+    console.log(e);
+    handleWritingText(e.key);
+  };
+
   // SETUP
   useEffect(() => {
     const undoBtn = undoRef.current;
@@ -49,15 +56,19 @@ const Canvas = () => {
     undoBtn?.addEventListener('click', handleUndo);
     redoBtn?.addEventListener('click', handleRedo);
 
+    document.addEventListener('keydown', handleKeydown);
+
     return () => {
       undoBtn?.removeEventListener('click', handleUndo);
       redoBtn?.removeEventListener('click', handleRedo);
+      document.removeEventListener('keydown', handleKeydown);
     };
   }, [canvasRef, dragging, handleRedo, handleUndo, redoRef, undoRef]);
 
   useEffect(() => {
     if (ctx) socket.emit('joined_room');
   }, [ctx]);
+
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -89,6 +100,7 @@ const Canvas = () => {
             setDragging(true);
             dragControls.start(e);
           } else handleStartDrawing(e.clientX, e.clientY);
+          handleStartText(e.clientX, e.clientY);
         }}
         onMouseUp={(e) => {
           if (e.button === 2) setDragging(false);
