@@ -1,9 +1,10 @@
 import { createServer } from 'http';
 
-import express from 'express';
+import express, { json } from 'express';
 import next, { NextApiHandler } from 'next';
 import { Server } from 'socket.io';
 import { v4 } from 'uuid';
+import mongoose from 'mongoose';
 
 import {
   ClientToServerEvents,
@@ -11,6 +12,7 @@ import {
   Room,
   ServerToClientEvents,
 } from '@/common/types/global';
+import { UserModel } from './user.model';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const dev = process.env.NODE_ENV !== 'production';
@@ -19,9 +21,12 @@ const nextHandler: NextApiHandler = nextApp.getRequestHandler();
 
 nextApp.prepare().then(async () => {
   const app = express();
+  app.use(json());
   const server = createServer(app);
 
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
+
+  await mongoose.connect('mongodb://127.0.0.1:27017/whiteboard');
 
   app.get('/hello', async (_, res) => {
     res.send('Hello World');
@@ -169,7 +174,44 @@ nextApp.prepare().then(async () => {
     });
   });
 
-  app.all('*', (req: any, res: any) => nextHandler(req, res));
+  app.get('*', (req: any, res: any) => nextHandler(req, res));
+
+  app.post('/register', async (req, res) => {
+    console.log(req.body);
+    const {user} = req.body;
+
+    const findUser = await UserModel.findOne({email: user.email}).exec();
+
+    if (findUser) {
+      res.status(400).send({error: 'This email is already in use'});
+      return;
+    }
+
+    const userModel = new UserModel(user);
+
+    const savedUser = await userModel.save();
+
+    res.status(200).send({user: savedUser});
+  });
+
+  app.post('/users', async (req, res) => {
+    console.log(req.body);
+    const {email, password} = req.body;
+
+    const user = await UserModel.findOne({email}).exec();
+
+    if (!user) {
+      res.status(404).send({error: 'User not found'});
+      return;
+    }
+
+    if (password !== user.password) {
+      res.status(400).send({error: 'Wrong password'});
+      return;
+    }
+
+    res.status(200).send({user});
+  });
 
   server.listen(port, () => {
     // eslint-disable-next-line no-console

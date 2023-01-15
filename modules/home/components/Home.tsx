@@ -24,13 +24,13 @@ const Home = () => {
   useEffect(() => {
     socket.on('created', (roomIdFromServer) => {
       setAtomRoomId(roomIdFromServer);
-      router.push(roomIdFromServer);
+      router.push(`${roomIdFromServer}`);
     });
 
     const handleJoinedRoom = (roomIdFromServer: string, failed?: boolean) => {
       if (!failed) {
         setAtomRoomId(roomIdFromServer);
-        router.push(roomIdFromServer);
+        router.push(`${roomIdFromServer}`);
       } else {
         openModal(<NotFoundModal id={roomId} />);
       }
@@ -59,7 +59,10 @@ const Home = () => {
     if (roomId) socket.emit('join_room', roomId, username);
   };
 
+
+
   return (
+    <>
     <div className="flex flex-col items-center py-24">
       <h1 className="text-5xl font-extrabold leading-tight sm:text-extra">
         Collaborative Whiteboard
@@ -114,6 +117,18 @@ const Home = () => {
         </button>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+</>
+
+    
   );
 };
 
