@@ -21,6 +21,7 @@ import LineWidthPicker from './LineWidthPicker';
 import ModePicker from './ModePicker';
 import ShapeSelector from './ShapeSelector';
 import UserList from '@/modules/room/components/UserList';
+import { deleteUserLocalStorage } from '@/common/lib/localStorage';
 
 const ToolBar = () => {
   const { canvasRef, bgRef } = useRefs();
@@ -36,7 +37,10 @@ const ToolBar = () => {
     else setOpened(false);
   }, [width]);
 
-  const handleExit = () => router.push('/');
+  const handleExit = () => {
+    deleteUserLocalStorage();
+    router.push('/');
+  } 
 
   const handleDownload = () => {
     const canvas = document.createElement('canvas');

@@ -23,7 +23,12 @@ const getUserLocalStorage = () => {
     }
 }
 
+const deleteUserLocalStorage = () => {
+    localStorage.removeItem('user');
+}
+
 export {
     setUserLocalStorage,
-    getUserLocalStorage
+    getUserLocalStorage,
+    deleteUserLocalStorage,
 };

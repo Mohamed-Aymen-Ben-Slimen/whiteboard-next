@@ -61,6 +61,7 @@ import { useState } from 'react';
 			<div className="max-w-md mx-auto">
 				<div>
 					<h1 className="text-2xl font-semibold">Create a new account</h1>
+                    <p>Do you have an account? <a href='/login' className='text-blue-500'>Login to your account</a></p>
 				</div>
 				<div className="divide-y divide-gray-200">
 					<div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
