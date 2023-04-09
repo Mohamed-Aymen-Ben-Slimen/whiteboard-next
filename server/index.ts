@@ -13,6 +13,7 @@ import {
   ServerToClientEvents,
 } from '@/common/types/global';
 import { UserModel } from './user.model';
+import { BoardModel } from './board.model';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const dev = process.env.NODE_ENV !== 'production';
@@ -133,7 +134,6 @@ nextApp.prepare().then(async () => {
 
     socket.on('draw', (move) => {
 
-      console.log(move);
       const roomId = getRoomId();
 
       const timestamp = Date.now();
@@ -171,6 +171,25 @@ nextApp.prepare().then(async () => {
       leaveRoom(roomId, socket.id);
 
       io.to(roomId).emit('user_disconnected', socket.id);
+    });
+
+    socket.on('save_board', (userId) => {
+      const roomId = getRoomId();
+
+console.log(userId);
+    console.log(rooms.get(roomId));
+
+
+    const boardModel = new BoardModel({
+      board: rooms.get(roomId),
+      user: userId,
+      roomId,
+      createdAt: Date.now(),
+    });
+
+    boardModel.save();
+
+
     });
   });
 
@@ -211,6 +230,14 @@ nextApp.prepare().then(async () => {
     }
 
     res.status(200).send({user});
+  });
+
+  app.post('/boards', async (req, res) => {
+    const {user} = req.body;
+
+    const boards = await BoardModel.find({user}).exec();
+
+    res.status(200).send({boards});
   });
 
   server.listen(port, () => {

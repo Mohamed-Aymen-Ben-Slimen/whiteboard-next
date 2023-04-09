@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { motion, useDragControls } from 'framer-motion';
-import { BsArrowsMove } from 'react-icons/bs';
+import { motion, useDragControls } from "framer-motion";
+import { BsArrowsMove } from "react-icons/bs";
 
-import { CANVAS_SIZE } from '@/common/constants/canvasSize';
-import { useViewportSize } from '@/common/hooks/useViewportSize';
-import { socket } from '@/common/lib/socket';
+import { CANVAS_SIZE } from "@/common/constants/canvasSize";
+import { useViewportSize } from "@/common/hooks/useViewportSize";
+import { socket } from "@/common/lib/socket";
 
-import { useMovesHandlers } from '../../../hooks/useMovesHandlers';
-import { useRefs } from '../../../hooks/useRefs';
-import { useBoardPosition } from '../hooks/useBoardPosition';
-import { useCtx } from '../hooks/useCtx';
-import { useDraw } from '../hooks/useDraw';
-import { useSocketDraw } from '../hooks/useSocketDraw';
-import Background from './Background';
-import MiniMap from './Minimap';
+import { useMovesHandlers } from "../../../hooks/useMovesHandlers";
+import { useRefs } from "../../../hooks/useRefs";
+import { useBoardPosition } from "../hooks/useBoardPosition";
+import { useCtx } from "../hooks/useCtx";
+import { useDraw } from "../hooks/useDraw";
+import { useSocketDraw } from "../hooks/useSocketDraw";
+import Background from "./Background";
+import MiniMap from "./Minimap";
 
 const Canvas = () => {
   const { canvasRef, bgRef, undoRef, redoRef } = useRefs();
@@ -41,6 +41,15 @@ const Canvas = () => {
 
   useEffect(() => {
     setDragging(false);
+    const savedBoard = sessionStorage.getItem("board");
+    if (savedBoard) {
+      const parsedSavedBoard = JSON.parse(savedBoard);
+      Object.values(parsedSavedBoard.usersMoves).forEach((userMove: any) => {
+        userMove.forEach((move: any) => {
+          socket.emit("draw", move);
+        });
+      });
+    }
   }, []);
 
   const handleKeydown = (e: KeyboardEvent) => {
@@ -53,22 +62,21 @@ const Canvas = () => {
     const undoBtn = undoRef.current;
     const redoBtn = redoRef.current;
 
-    undoBtn?.addEventListener('click', handleUndo);
-    redoBtn?.addEventListener('click', handleRedo);
+    undoBtn?.addEventListener("click", handleUndo);
+    redoBtn?.addEventListener("click", handleRedo);
 
-    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener("keydown", handleKeydown);
 
     return () => {
-      undoBtn?.removeEventListener('click', handleUndo);
-      redoBtn?.removeEventListener('click', handleRedo);
-      document.removeEventListener('keydown', handleKeydown);
+      undoBtn?.removeEventListener("click", handleUndo);
+      redoBtn?.removeEventListener("click", handleRedo);
+      document.removeEventListener("keydown", handleKeydown);
     };
   }, [canvasRef, dragging, handleRedo, handleUndo, redoRef, undoRef]);
 
   useEffect(() => {
-    if (ctx) socket.emit('joined_room');
+    if (ctx) socket.emit("joined_room");
   }, [ctx]);
-
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -77,7 +85,7 @@ const Canvas = () => {
         ref={canvasRef}
         width={CANVAS_SIZE.width}
         height={CANVAS_SIZE.height}
-        className={`absolute top-0 z-10 ${dragging && 'cursor-move'}`}
+        className={`absolute top-0 z-10 ${dragging && "cursor-move"}`}
         style={{ x, y }}
         // DRAG
         drag={dragging}
@@ -126,7 +134,7 @@ const Canvas = () => {
 
       <button
         className={`absolute bottom-14 right-5 z-10 rounded-xl md:bottom-5 ${
-          dragging ? 'bg-green-500' : 'bg-zinc-300 text-black'
+          dragging ? "bg-green-500" : "bg-zinc-300 text-black"
         } p-3 text-lg text-white`}
         onClick={() => setDragging((prev) => !prev)}
       >
