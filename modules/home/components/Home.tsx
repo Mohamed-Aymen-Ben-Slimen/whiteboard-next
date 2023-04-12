@@ -21,7 +21,7 @@ const Home = () => {
 
   const router = useRouter();
 
-  const loadBoards = (userId) => {
+  const loadBoards = (userId: string) => {
     axios
       .post("/boards", { user: userId })
       .then((response) => {
