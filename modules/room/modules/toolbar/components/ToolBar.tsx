@@ -21,13 +21,9 @@ import LineWidthPicker from "./LineWidthPicker";
 import ModePicker from "./ModePicker";
 import ShapeSelector from "./ShapeSelector";
 import UserList from "@/modules/room/components/UserList";
-import {
-  deleteUserLocalStorage,
-  getUserLocalStorage,
-} from "@/common/lib/localStorage";
+import { deleteUserLocalStorage } from "@/common/lib/localStorage";
 import { useRoom } from "@/common/recoil/room";
-import axios from "axios";
-import { socket } from "@/common/lib/socket";
+import { SaveRoomModal } from "../modals/SaveRoomModal";
 
 const ToolBar = () => {
   const { canvasRef, bgRef } = useRefs();
@@ -67,11 +63,7 @@ const ToolBar = () => {
     link.click();
   };
 
-  const handleSave = () => {
-    const user = getUserLocalStorage();
-
-    socket.emit("save_board", user._id);
-  };
+  const handleSave = () => openModal(<SaveRoomModal />);
 
   const handleShare = () => openModal(<ShareModal />);
 

@@ -111,6 +111,8 @@ const Home = () => {
               </h2>
             </div>
 
+            <hr className="mx-auto my-4 h-1 w-48 rounded border-0 bg-gray-100 dark:bg-gray-700 md:my-10" />
+
             <div className="mt-6">
               <button
                 className="w-full transform rounded-md bg-green-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-green-400 focus:bg-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-50"
@@ -119,6 +121,8 @@ const Home = () => {
                 Create a new room
               </button>
             </div>
+
+            <hr className="mx-auto my-4 h-1 w-48 rounded border-0 bg-gray-100 dark:bg-gray-700 md:my-10" />
 
             <div className="mt-6">
               <div className="mb-2 flex justify-between">
@@ -164,7 +168,7 @@ const Home = () => {
                       className="rounded-lg border-2 border-white p-2 hover:cursor-pointer hover:border-blue-500"
                       onClick={() => handleOpenSavedBoard(board.board)}
                     >
-                      <p className="font-bold">{board.roomId}</p>
+                      <p className="font-bold">{board.name}</p>
                       <p>
                         saved on{" "}
                         {new Date(board.createdAt).toLocaleDateString("en-US", {

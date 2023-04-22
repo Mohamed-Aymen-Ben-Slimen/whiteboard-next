@@ -173,10 +173,10 @@ nextApp.prepare().then(async () => {
       io.to(roomId).emit('user_disconnected', socket.id);
     });
 
-    socket.on('save_board', (userId) => {
+    socket.on('save_board', (userId, name) => {
       const roomId = getRoomId();
 
-console.log(userId);
+    console.log(userId);
     console.log(rooms.get(roomId));
 
 
@@ -184,6 +184,7 @@ console.log(userId);
       board: rooms.get(roomId),
       user: userId,
       roomId,
+      name,
       createdAt: Date.now(),
     });
 

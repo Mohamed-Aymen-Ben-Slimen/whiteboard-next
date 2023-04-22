@@ -81,7 +81,7 @@ export interface ServerToClientEvents {
   new_user: (userId: string, username: string) => void;
   user_disconnected: (userId: string) => void;
   new_msg: (userId: string, msg: string) => void;
-  save_board: (userId: string) => void;
+  save_board: (userId: string, name: string) => void;
 }
 
 export interface ClientToServerEvents {
@@ -94,5 +94,5 @@ export interface ClientToServerEvents {
   joined_room: () => void;
   leave_room: () => void;
   send_msg: (msg: string) => void;
-  save_board: (userId: string) => void;
+  save_board: (userId: string, name: string) => void;
 }

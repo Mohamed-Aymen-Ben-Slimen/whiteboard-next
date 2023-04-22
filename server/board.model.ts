@@ -5,6 +5,7 @@ const BoardSchema = new Schema({
   board: Object,
   user: String,
   roomId: String,
+  name: String,
   createdAt: Date,
 });
 
