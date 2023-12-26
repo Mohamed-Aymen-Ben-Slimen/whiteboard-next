@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { socket } from "@/common/lib/socket";
-import { useSetRoomId } from "@/common/recoil/room";
+import { useRoom, useSetRoomId } from "@/common/recoil/room";
 import { useModal } from "@/modules/modal";
 
 import NotFoundModal from "../modals/NotFound";
@@ -13,6 +13,7 @@ import axios from "axios";
 const Home = () => {
   const { openModal } = useModal();
   const setAtomRoomId = useSetRoomId();
+  const room = useRoom();
 
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
@@ -33,11 +34,19 @@ const Home = () => {
   useEffect(() => {
     document.body.style.backgroundColor = "white";
     const u = getUserLocalStorage();
-    console.log(u);
     setUser(u);
+    console.log(u);
+    console.log(room);
+    if (!u?._id) {
+      router.push("/login");
+      return;
+    }
+    if (room.id.length > 0) {
+      setRoomId(room.id);
+    }
     setUsername(`${u?.firstName} ${u?.lastName}`);
     loadBoards(u?._id);
-  }, []);
+  }, [room.id]);
 
   useEffect(() => {
     socket.on("created", (roomIdFromServer) => {
@@ -60,12 +69,12 @@ const Home = () => {
       socket.off("created");
       socket.off("joined", handleJoinedRoom);
     };
-  }, [openModal, roomId, router, setAtomRoomId]);
+  }, [roomId, router]);
 
   useEffect(() => {
     socket.emit("leave_room");
     setAtomRoomId("");
-  }, [setAtomRoomId]);
+  }, []);
 
   const handleCreateRoom = () => {
     sessionStorage.removeItem("board");
@@ -91,7 +100,7 @@ const Home = () => {
           className="hidden bg-cover lg:block lg:w-2/3"
           style={{
             backgroundImage:
-              "url(https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81zRnTPY1ZL._AC_UF894,1000_QL80_.jpg)",
+              "url(https://qph.cf2.quoracdn.net/main-qimg-078d10a347510e39eec4d66c54dc749e-lq)",
           }}
         >
           <div className="flex h-full items-center bg-gray-900 bg-opacity-40 px-20">
@@ -105,7 +114,14 @@ const Home = () => {
 
         <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
           <div className="flex-1">
-            <div className="text-center">
+            <div className="flex flex-col items-center justify-center text-center">
+              <img
+                src="/logo1.png"
+                className="mb-5 h-20 w-20"
+                style={{
+                  animation: "spin 5000ms linear infinite",
+                }}
+              />
               <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
                 User: {username}
               </h2>

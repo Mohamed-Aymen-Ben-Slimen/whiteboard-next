@@ -70,9 +70,16 @@ const Register: NextPage = () => {
           </div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
+        <div className="mx-auto flex w-full max-w-md items-center px-6 pt-20 pb-10 lg:w-2/6">
           <div className="flex-1">
-            <div className="text-center">
+            <div className="flex flex-col items-center justify-center text-center">
+              <img
+                src="/logo1.png"
+                className="mb-5 h-20 w-20"
+                style={{
+                  animation: "spin 5000ms linear infinite",
+                }}
+              />
               <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
                 White Board
               </h2>
