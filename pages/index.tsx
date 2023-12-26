@@ -1,9 +1,8 @@
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-
+import { useRouter } from "next/router";
 import Home from "@/modules/home";
 import { getUserLocalStorage } from "@/common/lib/localStorage";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 const HomePage: NextPage = () => {
   const router = useRouter();

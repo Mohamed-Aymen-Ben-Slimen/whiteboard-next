@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  @apply font-montserrat font-medium focus:outline-none focus:ring focus:ring-red-500;
-}
 
 @layer components {
   .btn-icon {

@@ -1,25 +1,30 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { DEFAULT_MOVE } from '@/common/constants/defaultMove';
-import { useViewportSize } from '@/common/hooks/useViewportSize';
-import { getPos } from '@/common/lib/getPos';
-import { getStringFromRgba } from '@/common/lib/rgba';
-import { socket } from '@/common/lib/socket';
-import { useOptionsValue } from '@/common/recoil/options';
-import { useSetSelection } from '@/common/recoil/options/options.hooks';
-import { useMyMoves } from '@/common/recoil/room';
-import { useSetSavedMoves } from '@/common/recoil/savedMoves';
-import { Move } from '@/common/types/global';
+import { DEFAULT_MOVE } from "@/common/constants/defaultMove";
+import { useViewportSize } from "@/common/hooks/useViewportSize";
+import { getPos } from "@/common/lib/getPos";
+import { getStringFromRgba } from "@/common/lib/rgba";
+import { socket } from "@/common/lib/socket";
+import { useOptionsValue } from "@/common/recoil/options";
+import { useSetSelection } from "@/common/recoil/options/options.hooks";
+import { useMyMoves } from "@/common/recoil/room";
+import { useSetSavedMoves } from "@/common/recoil/savedMoves";
+import { Move } from "@/common/types/global";
 
-import { drawRect, drawCircle, drawLine, drawText } from '../helpers/Canvas.helpers';
-import { useBoardPosition } from './useBoardPosition';
-import { useCtx } from './useCtx';
+import {
+  drawRect,
+  drawCircle,
+  drawLine,
+  drawText,
+} from "../helpers/Canvas.helpers";
+import { useBoardPosition } from "./useBoardPosition";
+import { useCtx } from "./useCtx";
 
 let tempMoves: [number, number][] = [];
 let tempCircle = { cX: 0, cY: 0, radiusX: 0, radiusY: 0 };
 let tempSize = { width: 0, height: 0 };
 let tempImageData: ImageData | undefined;
-let tempText = { text: '', x: 0, y: 0 };
+let tempText = { text: "", x: 0, y: 0 };
 
 let mouseX = 0;
 let mouseY = 0;
@@ -45,9 +50,9 @@ export const useDraw = (blocked: boolean) => {
       ctx.strokeStyle = getStringFromRgba(options.lineColor);
       ctx.fillStyle = getStringFromRgba(options.fillColor);
       ctx.fillStyle = getStringFromRgba(options.lineColor);
-      if (options.mode === 'eraser')
-        ctx.globalCompositeOperation = 'destination-out';
-      else ctx.globalCompositeOperation = 'source-over';
+      if (options.mode === "eraser")
+        ctx.globalCompositeOperation = "destination-out";
+      else ctx.globalCompositeOperation = "source-over";
     }
   };
 
@@ -73,7 +78,7 @@ export const useDraw = (blocked: boolean) => {
     setupCtxOptions();
     drawAndSet();
 
-    if (options.shape === 'line' && options.mode !== 'select') {
+    if (options.shape === "line" && options.mode !== "select") {
       ctx.beginPath();
       ctx.lineTo(finalX, finalY);
       ctx.stroke();
@@ -83,31 +88,34 @@ export const useDraw = (blocked: boolean) => {
   };
 
   const handleStartText = (x: number, y: number) => {
-    if (options.shape === 'text' && options.mode !== 'select') {
+    if (options.shape === "text" && options.mode !== "select") {
       mouseX = x;
       mouseY = y;
       startingX = mouseX;
     }
-  }
+  };
 
   const handleWritingText = (s: string) => {
     if (!ctx || blocked) return;
 
-    if (options.shape === 'text' && options.mode !== 'select' && s.length === 1) {
+    if (
+      options.shape === "text" &&
+      options.mode !== "select" &&
+      s.length === 1
+    ) {
       tempText = { text: s, x: mouseX, y: mouseY };
       drawText(ctx, s, mouseX, mouseY);
       mouseX += 1 + ctx.measureText(s).width;
-      console.log(ctx.measureText(s).width);
-      
+
       handleEndDrawing();
     }
-    if (s === 'Enter') {
+    if (s === "Enter") {
       mouseX = startingX;
       mouseY += 34;
-      tempText = { text: '', x: mouseX, y: mouseY };
+      tempText = { text: "", x: mouseX, y: mouseY };
       handleEndDrawing();
     }
-  }
+  };
 
   const handleDraw = (x: number, y: number, shift?: boolean) => {
     if (!ctx || !drawing || blocked) return;
@@ -116,8 +124,8 @@ export const useDraw = (blocked: boolean) => {
 
     drawAndSet();
 
-    if (options.mode === 'select') {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    if (options.mode === "select") {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       drawRect(ctx, tempMoves[0], finalX, finalY, false, true);
       tempMoves.push([finalX, finalY]);
 
@@ -127,7 +135,7 @@ export const useDraw = (blocked: boolean) => {
     }
 
     switch (options.shape) {
-      case 'line':
+      case "line":
         if (shift) tempMoves = tempMoves.slice(0, 1);
 
         drawLine(ctx, tempMoves[0], finalX, finalY, shift);
@@ -135,11 +143,11 @@ export const useDraw = (blocked: boolean) => {
         tempMoves.push([finalX, finalY]);
         break;
 
-      case 'circle':
+      case "circle":
         tempCircle = drawCircle(ctx, tempMoves[0], finalX, finalY, shift);
         break;
 
-      case 'rect':
+      case "rect":
         tempSize = drawRect(ctx, tempMoves[0], finalX, finalY, shift);
         break;
 
@@ -161,7 +169,7 @@ export const useDraw = (blocked: boolean) => {
     ctx.closePath();
 
     let addMove = true;
-    if (options.mode === 'select' && tempMoves.length) {
+    if (options.mode === "select" && tempMoves.length) {
       clearOnYourMove();
       let x = tempMoves[0][0];
       let y = tempMoves[0][1];
@@ -207,10 +215,10 @@ export const useDraw = (blocked: boolean) => {
     tempMoves = [];
     tempCircle = { cX: 0, cY: 0, radiusX: 0, radiusY: 0 };
     tempSize = { width: 0, height: 0 };
-    tempText = { text: '', x: 0, y: 0 };
+    tempText = { text: "", x: 0, y: 0 };
 
-    if (options.mode !== 'select') {
-      socket.emit('draw', move);
+    if (options.mode !== "select") {
+      socket.emit("draw", move);
       clearSavedMoves();
     } else if (addMove) handleAddMyMove(move);
   };

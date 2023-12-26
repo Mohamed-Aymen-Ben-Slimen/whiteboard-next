@@ -35,8 +35,6 @@ const Home = () => {
     document.body.style.backgroundColor = "white";
     const u = getUserLocalStorage();
     setUser(u);
-    console.log(u);
-    console.log(room);
     if (!u?._id) {
       router.push("/login");
       return;

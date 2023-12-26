@@ -53,7 +53,6 @@ const Canvas = () => {
   }, []);
 
   const handleKeydown = (e: KeyboardEvent) => {
-    console.log(e);
     handleWritingText(e.key);
   };
 
